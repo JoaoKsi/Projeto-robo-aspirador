@@ -1,0 +1,57 @@
+#include <Ultrasonic.h>
+
+Ultrasonic ultrasonicFrontal(5, 6);
+Ultrasonic ultrasonicEsquerdo(7, 8);
+Ultrasonic ultrasonicDireito(9, 10);
+
+const int motorEsquerdoIN1 = 11;
+const int motorEsquerdoIN2 = 12;
+const int motorDireitoIN3 = 13;
+const int motorDireitoIN4 = 14;
+
+void setup() {
+  pinMode(motorEsquerdoIN1, OUTPUT);
+  pinMode(motorEsquerdoIN2, OUTPUT);
+  pinMode(motorDireitoIN3, OUTPUT);
+  pinMode(motorDireitoIN4, OUTPUT);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  int distanceFrontal = ultrasonicFrontal.read();
+  int distanceEsquerdo = ultrasonicEsquerdo.read();
+  int distanceDireito = ultrasonicDireito.read();
+
+  Serial.print("Distância Frontal: ");
+  Serial.print(distanceFrontal);
+  Serial.print(" cm, Distância Esquerdo: ");
+  Serial.print(distanceEsquerdo);
+  Serial.print(" cm, Distância Direito: ");
+  Serial.print(distanceDireito);
+  Serial.println(" cm");
+
+  if (distanceFrontal < 15) {
+    digitalWrite(motorDireitoIN3, HIGH);
+    digitalWrite(motorDireitoIN4, LOW);
+    digitalWrite(motorEsquerdoIN1, LOW);
+    digitalWrite(motorEsquerdoIN2, LOW);
+  } else if (distanceEsquerdo < 15) {
+    digitalWrite(motorDireitoIN3, HIGH);
+    digitalWrite(motorDireitoIN4, LOW);
+    digitalWrite(motorEsquerdoIN1, LOW);
+    digitalWrite(motorEsquerdoIN2, LOW);
+  } else if (distanceDireito < 15) {
+    digitalWrite(motorEsquerdoIN1, HIGH);
+    digitalWrite(motorEsquerdoIN2, LOW);
+    digitalWrite(motorDireitoIN3, LOW);
+    digitalWrite(motorDireitoIN4, LOW);
+  } else {
+    digitalWrite(motorEsquerdoIN1, HIGH);
+    digitalWrite(motorEsquerdoIN2, LOW);
+    digitalWrite(motorDireitoIN3, HIGH);
+    digitalWrite(motorDireitoIN4, LOW);
+  }
+
+  delay(100);
+}
